@@ -1,94 +1,70 @@
 package main
 
 import (
+	"fmt"
+	"go-server/functions"
 	"html/template"
 	"net/http"
+	"strings"
 )
 
-// Define a struct to hold the data for the template
 type PageData struct {
-	Title string
-	Body  string
+	Message string
 }
 
-// Handler for the main page (GET /)
-func mainPageHandler(w http.ResponseWriter, r *http.Request) {
-	data := PageData{
-		Title: "Welcome to My ASCII Art Server",
-		Body:  "Enter your text and choose a banner below!",
-	}
+func home(w http.ResponseWriter, r *http.Request) {
 
-	tmpl := `
-	<!DOCTYPE html>
-	<html>
-	<head>
-		<title>{{.Title}}</title>
-	</head>
-	<body>
-		<h1>{{.Title}}</h1>
-		<p>{{.Body}}</p>
-		<form action="/ascii-art" method="POST">
-			<label for="text">Text:</label>
-			<input type="text" id="text" name="text" required>
-			<br>
-			<label for="banner">Banner:</label>
-			<select id="banner" name="banner">
-				<option value="simple">Simple</option>
-				<option value="bold">Bold</option>
-				<option value="fancy">Fancy</option>
-			</select>
-			<br>
-			<input type="submit" value="Generate ASCII Art">
-		</form>
-	</body>
-	</html>
-	`
-
-	t := template.Must(template.New("main").Parse(tmpl))
-	t.Execute(w, data)
-}
-
-// Handler for the ASCII art endpoint (POST /ascii-art)
-func asciiArtHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
-	// Parse form data
-	err := r.ParseForm()
+	// pease the html template
+	tmpl, err := template.ParseFiles("index.html")
 	if err != nil {
-		http.Error(w, "Bad request", http.StatusBadRequest)
+		http.Error(w, "eror", http.StatusInternalServerError)
 		return
 	}
-	// ad smone ref
-	text := r.FormValue("text")
-	banner := r.FormValue("banner")
+	// now  execute the template
+	if err := tmpl.Execute(w, nil); err != nil {
+		http.Error(w, "error", http.StatusInternalServerError)
+	}
+}
 
-	// Here you could add logic to create ASCII art based on the text and banner.
-	// For demonstration, we'll just respond with the received values.
-	response := `
-	<!DOCTYPE html>
-	<html>
-	<head>
-		<title>ASCII Art Result</title>
-	</head>
-	<body>
-		<h1>Your ASCII Art</h1>
-		<p>Text: ` + text + `</p>
-		<p>Banner: ` + banner + `</p>
-		<p>This is where your ASCII art would be displayed!</p>
-		<a href="/">Back to main page</a>
-	</body>
-	</html>
-	`
+func submitHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		// Parse the form
+		err := r.ParseForm()
+		if err != nil {
+			http.Error(w, "Failed to parse form", http.StatusBadRequest)
+			return
+		}
 
-	w.Write([]byte(response))
+		// Get the input text
+		inputText := r.FormValue("inputText")
+		slice := functions.ReadFile("./banners/standard.txt")
+		joinedString := strings.Join(slice, " ")
+		test := []byte(joinedString)
+		outout := functions.TraitmentData(test, inputText, false)
+		// Prepare the message to display
+		message := outout
+		fmt.Println(message)
+
+		// Render the home page with the message
+		tmpl, err := template.ParseFiles("index.html", "style.css")
+		if err != nil {
+			http.Error(w, "Unable to load template", http.StatusInternalServerError)
+			return
+		}
+
+		err = tmpl.Execute(w, PageData{Message: message})
+		if err != nil {
+			http.Error(w, "Unable to execute template", http.StatusInternalServerError)
+		}
+	} else {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	}
 }
 
 func main() {
-	http.HandleFunc("/", mainPageHandler)          // Handle GET /
-	http.HandleFunc("/ascii-art", asciiArtHandler) // Handle POST /ascii-art
+	http.HandleFunc("/", home)
+	http.HandleFunc("/t", submitHandler) // Handle POST /submit
+	fmt.Println("srever is running i  port 8080 ", ">>> http://localhost:8080")
 
-	http.ListenAndServe(":8080", nil) // Start server on port 8080
+	http.ListenAndServe(":8080", nil)
 }
