@@ -3,7 +3,6 @@ package functions
 import (
 	"fmt"
 	"os"
-	"regexp"
 	"strings"
 )
 
@@ -12,7 +11,7 @@ func ReadFile(filename string) []string {
 	data, err := os.ReadFile(filename)
 	// handle err
 	if err != nil {
-		fmt.Println("Usage: go run . [OPTION] [STRING] [BANNER]\n\nExample: go run . --output=<fileName.txt> something standard")
+		fmt.Println("Usage: go run .[STRING] [BANNER]\n\nExample: go run .  something standard")
 		os.Exit(0)
 	}
 	// handling if the banner file was writenf by windows
@@ -20,37 +19,23 @@ func ReadFile(filename string) []string {
 	stringdata = strings.ReplaceAll(stringdata, "\r\n", "\n")
 
 	result := strings.Split(stringdata, "\n")
-
 	return result
 }
 
-// the result file name
-func Extract_Result_File_Name(resultFile string) string {
-	if strings.HasPrefix(resultFile, "--output=") && strings.HasSuffix(resultFile, ".txt") || resultFile == "" {
-		re := regexp.MustCompile(`--output=`)
-		resultFile = re.ReplaceAllString(resultFile, "")
-	} else {
-		fmt.Println("Usage: go run . [OPTION] [STRING] [BANNER]\n\nExample: go run . --output=<fileName.txt> something standard")
-		os.Exit(0)
-	}
-
-	return resultFile
-}
-
 // this is the the traitment functions
-func TraitmentData(text []byte, arg string, status bool) string {
-	// cheeck if the char is in range or not if
+func TraitmentData(text []string, arg string) string {
+	// Normalize newlines
+	arg = strings.ReplaceAll(arg, "\r\n", "\\n")
+
 	for _, char := range arg {
 		if char < 32 || char > 126 {
-			fmt.Println("Ereur : one of this carcters is not in range")
-			return ""
+			fmt.Println(char)
+			return " error : one of this charachter not in range "
 		}
 	}
 	result := ""
 
-	arrData := strings.Split(string(text), "\n")
-
-	words := strings.Split(arg, `\n`)
+	words := strings.Split(arg, "\\n")
 
 	/////////////////////////////////
 	// this part just for newlines
@@ -66,18 +51,12 @@ func TraitmentData(text []byte, arg string, status bool) string {
 			result += "\n"
 		}
 	} else {
-		result = Final_result(arrData, words)
+		result = Final_result(text, words)
 	}
-	if status {
-		//os.WriteFile(resultFile, []byte(result), 0o777)
 
-	} else {
-		return result
-	}
 	return result
 }
 
-// traitment the data if it have charachters
 func Final_result(arrData, words []string) string {
 	result := ""
 	for k := 0; k < len(words); k++ {
@@ -90,12 +69,8 @@ func Final_result(arrData, words []string) string {
 				Ascii := (int(words[k][j] - 32))
 
 				start := Ascii*8 + Ascii + 1 + i
-				if words[k][j] < 32 || words[k][j] > 126 {
-					fmt.Println(" error : one of this charachter not in range ")
-					os.Exit(0)
-				} else {
-					result += arrData[start]
-				}
+
+				result += arrData[start]
 
 			}
 			result += "\n"
@@ -103,11 +78,4 @@ func Final_result(arrData, words []string) string {
 	}
 
 	return result
-}
-
-func TrueOutput(resultFile string) bool {
-	if strings.HasPrefix(resultFile, "--output=") && strings.HasSuffix(resultFile, ".txt") {
-		return true
-	}
-	return false
 }

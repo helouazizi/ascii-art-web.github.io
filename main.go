@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"go-server/functions"
 	"html/template"
 	"net/http"
-	"strings"
+
+	"server/functions"
 )
 
 type PageData struct {
@@ -13,8 +13,10 @@ type PageData struct {
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
-
-	// pease the html template
+	if r.URL.Path != "/" {
+		http.Error(w, "Eror 404: NOT FOUND", http.StatusNotFound)
+		return
+	}
 	tmpl, err := template.ParseFiles("index.html")
 	if err != nil {
 		http.Error(w, "eror", http.StatusInternalServerError)
@@ -37,16 +39,31 @@ func submitHandler(w http.ResponseWriter, r *http.Request) {
 
 		// Get the input text
 		inputText := r.FormValue("inputText")
-		slice := functions.ReadFile("./banners/standard.txt")
-		joinedString := strings.Join(slice, " ")
-		test := []byte(joinedString)
-		outout := functions.TraitmentData(test, inputText, false)
+
+		banner := r.FormValue("choice")
+		templwwwate := []string{}
+
+		switch banner {
+		case "standard":
+			templwwwate = functions.ReadFile("banners/" + banner + ".txt")
+		case "shadow":
+			templwwwate = functions.ReadFile("banners/" + banner + ".txt")
+		case "thinkertoy":
+			templwwwate = functions.ReadFile("banners/" + banner + ".txt")
+
+		default:
+			http.Error(w, "Eror : Bad Request", http.StatusBadRequest)
+			return
+
+		}
+
+		tretedtext := functions.TraitmentData(templwwwate, inputText)
+
 		// Prepare the message to display
-		message := outout
-		fmt.Println(message)
+		message := /*"he " + inputText + "! " + "you are shosen " + banner*/ tretedtext
 
 		// Render the home page with the message
-		tmpl, err := template.ParseFiles("index.html", "style.css")
+		tmpl, err := template.ParseFiles("index.html")
 		if err != nil {
 			http.Error(w, "Unable to load template", http.StatusInternalServerError)
 			return
@@ -63,7 +80,7 @@ func submitHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	http.HandleFunc("/", home)
-	http.HandleFunc("/t", submitHandler) // Handle POST /submit
+	http.HandleFunc("/ascii-art", submitHandler) // Handle POST /submit
 	fmt.Println("srever is running i  port 8080 ", ">>> http://localhost:8080")
 
 	http.ListenAndServe(":8080", nil)
