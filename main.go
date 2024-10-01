@@ -39,6 +39,10 @@ func submitHandler(w http.ResponseWriter, r *http.Request) {
 
 		// Get the input text
 		inputText := r.FormValue("inputText")
+		if len(inputText) > 500 {
+			http.Error(w, "Eror : Bad Request ==> text overfflow", http.StatusBadRequest)
+			return
+		}
 
 		banner := r.FormValue("choice")
 		templwwwate := []string{}
