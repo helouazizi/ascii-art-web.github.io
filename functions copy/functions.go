@@ -11,7 +11,7 @@ func ReadFile(filename string) []string {
 	data, err := os.ReadFile(filename)
 	// handle err
 	if err != nil {
-		fmt.Println("Usage: go run .[STRING] [BANNER]\n\nExample: go run .  something standard")
+		fmt.Println("Error :", err)
 		os.Exit(0)
 	}
 	// handling if the banner file was writenf by windows
@@ -23,36 +23,23 @@ func ReadFile(filename string) []string {
 }
 
 // this is the the traitment functions
-func TraitmentData(text []string, arg string) string {
+func TraitmentData(text []string, inputText string) string {
 	// Normalize newlines
-	arg = strings.ReplaceAll(arg, "\r\n", "\\n")
+	inputText = strings.ReplaceAll(inputText, "\r\n", "\r")
 
-	for _, char := range arg {
-		if char < 32 || char > 126 {
+	for _, char := range inputText {
+		if (char < 32 && char != 13) || char > 126 {
+
 			fmt.Println(char)
-			return " error : one of this charachter not in range "
+			return " Error : one of this charachter not in range "
 		}
 	}
+	inputText = strings.ReplaceAll(inputText, "\r", "\r\n")
 	result := ""
 
-	words := strings.Split(arg, "\\n")
+	words := strings.Split(inputText, "\r\n")
 
-	/////////////////////////////////
-	// this part just for newlines
-	count := 0
-	for _, test := range words {
-		if test == "" {
-			count++
-		}
-	}
-	// in case the data is all new line
-	if count == (len(arg)/2)+1 {
-		for i := 0; i < (len(arg) / 2); i++ {
-			result += "\n"
-		}
-	} else {
-		result = Final_result(text, words)
-	}
+	result = Final_result(text, words)
 
 	return result
 }
@@ -60,10 +47,7 @@ func TraitmentData(text []string, arg string) string {
 func Final_result(arrData, words []string) string {
 	result := ""
 	for k := 0; k < len(words); k++ {
-		if words[k] == "" {
-			result += "\n"
-			continue
-		}
+		
 		for i := 0; i < 8; i++ {
 			for j := 0; j < len(words[k]); j++ {
 				Ascii := (int(words[k][j] - 32))

@@ -20,16 +20,7 @@
             width: 206px;
             display: block;
         }
-/*
-        .output {
-          padding: 20px;
-            margin: 50px 0px;
-            height: 200px;
-            color: rgb(233, 230, 230);
-            background-color: rgba(0, 0, 0, 0.781);
-            width: 90%;
-        }
-            */
+
     </style>
 </head>
 
@@ -46,7 +37,10 @@
         <label for="thinkertoy">thinkertoy</label><br><br>
         <input type="submit" value="Submit" class="submit">
     </form>
-
+    {{if .Message}}
+    <h2>Generated ASCII Art:</h2>
+    <pre class="output">{{ .Message }}</pre>
+    {{end}}
 </body>
 
 </html>
