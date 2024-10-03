@@ -5,7 +5,7 @@ import (
 	"html/template"
 	"net/http"
 
-	"ascii-art-web/functions"
+	"ascii-art-web.github.io/functions"
 )
 
 type PageData struct {

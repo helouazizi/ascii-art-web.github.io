@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"ascii-art-web/server"
+	"ascii-art-web.github.io/server"
 )
 
 func main() {
