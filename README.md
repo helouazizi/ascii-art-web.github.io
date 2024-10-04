@@ -1,31 +1,29 @@
-# ascii-art-web
-
-This project is designed to accept a string and output formatted ASCII art into a specified text file. The user can customize the output using flags and banners.
-`standard.txt` The primary functionality ensures that the output file is generated based on the specified command-line options.
+## ASCII Art Web Application
+## Overview
+This is a simple web application that generates ASCII art based on user input. The application uses the Go programming language and the net/http package to handle HTTP requests and responses.
 
 ## Features
+Users can input text and select a banner style to generate ASCII art.
+The application supports three banner styles: standard, shadow, and thinkertoy.
+The input text is limited to 500 characters.
+## How to Run
+Clone the repository and navigate to the project directory.
+Run the command go run main.go  or go run .to start the server.
+Open a web browser and navigate to http://localhost:8080 to access the application.
+## Endpoints
+/: The home page of the application, which displays a form for user input.
+/ascii-art: The endpoint that handles form submissions and generates ASCII art.
+## Error Handling
+The application handles errors in the following ways:
 
-- Output string as ASCII art into a specified text file.
-- Supports customizable options and banners.
-- Accepts a single string argument as an alternative mode of operation.
-- Validates command-line inputs to ensure correct usage.
+404 Not Found: Returned when the requested URL is not found.
+405 Method Not Allowed: Returned when the request method is not POST.
+400 Bad Request: Returned when the input text exceeds 500 characters or the banner style is invalid.
+500 Internal Server Error: Returned when an unexpected error occurs.
+## Dependencies
+html/template: Used for templating HTML responses.
+net/http: Used for handling HTTP requests and responses.
+functions: A custom package that provides functions for reading banner templates and generating ASCII art.
+I hope this helps
 
-## Installation
 
-Ensure you have Go installed on your machine. To clone the repository and navigate to the project directory, run:
-`git clone <repository-url>`
-`cd <project-directory>`
-
-## Running the Program
-
-After setting up, you can execute the program with the appropriate command as described in the Usage section.
-` go run . [resultfilename] [STRING] [BANNER] `
-
-## Note
-
-The program checks for non-printable characters and will terminate with an error message if any are found.
-It will also inform you if the incorrect number of command-line arguments is provided.
-
-## Contributing
-
-Contributions are welcome! If you have suggestions for improvements or new features, feel free to open an issue or submit a pull request.

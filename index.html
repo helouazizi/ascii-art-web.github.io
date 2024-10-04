@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+
     <title>Text Input Form</title>
     <style>
         .title {
@@ -20,32 +20,26 @@
             width: 206px;
             display: block;
         }
-
-        .output {
-            margin: 50px 0px;
-            height: 200px;
-            color: rgb(233, 230, 230);
-            background-color: rgba(0, 0, 0, 0.781);
-        }
     </style>
 </head>
 
 <body>
     <h1 class="title">ASCII-ART-WEB</h1>
-    <form action="/t" method="POST">
+    <form action="/ascii-art" method="POST">
         <label for="inputText">Enter Text:</label><br>
-        <input type="text" id="inputText" name="inputText" placeholder="enter your name" required><br>
-        <input type="radio" id="inputText" name="chose" value="1">
+        <textarea type="text" id="inputText" name="inputText" placeholder="enter your text" required></textarea><br><br>
+        <input type="radio" id="standard" name="choice" value="standard" checked>
+        <label for="standard">standard</label><br>
+        <input type="radio" id="shadow" name="choice" value="shadow">
+        <label for="shadow">shadow</label><br>
+        <input type="radio" id="thinkertoy" name="choice" value="thinkertoy">
+        <label for="thinkertoy">thinkertoy</label><br><br>
         <input type="submit" value="Submit" class="submit">
     </form>
-    <div class="output">
-        {{if .Message}}
-        <div>
-            {{.Message}}
-        </div>
-        {{end}}
-    </div>
-
+    {{if .Message}}
+    <h2>Generated ASCII Art:</h2>
+    <pre class="output">{{ .Message }}</pre>
+    {{end}}
 </body>
 
 </html>

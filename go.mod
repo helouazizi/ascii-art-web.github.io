@@ -1,3 +1,3 @@
-module go-server
+module ascii-art-web.github.io
 
-go 1.22.5
+go 1.22.3
