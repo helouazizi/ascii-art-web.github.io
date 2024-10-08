@@ -5,7 +5,7 @@ import (
 	"html/template"
 	"net/http"
 
-	"ascii-art-web.github.io/functions"
+	"ascii-art-web/functions"
 )
 
 type PageData struct {
@@ -17,12 +17,17 @@ const maxInputTextLength = 500
 var temple01 *template.Template
 
 func Home(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
-		http.Error(w, "Error 404: NOT FOUND", http.StatusNotFound)
+	if r.Method != "GET" {
+		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	tmpl, err := template.ParseFiles("index.html")
+	if r.URL.Path != "/" {
+		http.Error(w, "Not Found", http.StatusNotFound)
+		return
+	}
+	tmpl, err := template.ParseFiles("template/index.html")
 	temple01 = tmpl
+
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -30,14 +35,11 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	err = tmpl.Execute(w, nil)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 }
 
 func ParseForm(r *http.Request) (string, string, error) {
-	err := r.ParseForm()
-	if err != nil {
-		return "", "", err
-	}
 	inputText := r.FormValue("inputText")
 	if len(inputText) > maxInputTextLength {
 		return "", "", fmt.Errorf("input text exceeds %d characters", maxInputTextLength)
@@ -51,7 +53,7 @@ func ReadBannerTemplate(banner string) ([]string, error) {
 	case "standard", "shadow", "thinkertoy":
 		return functions.ReadFile("banners/" + banner + ".txt"), nil
 	default:
-		return nil, fmt.Errorf("error: 300 invalid banner choice: %s", banner)
+		return nil, fmt.Errorf("error: 400 invalid banner choice: %s", banner)
 	}
 }
 
@@ -80,5 +82,9 @@ func SubmitHandler(w http.ResponseWriter, r *http.Request) {
 	err = test.Execute(w, PageData{Message: treatedText})
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
+}
+func CssHandler(w http.ResponseWriter, r *http.Request){
+	http.ServeFile(w, r, "template/style.css")
 }
