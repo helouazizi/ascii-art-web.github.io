@@ -1,3 +1,4 @@
-module ascii-art-web.github.io
+module ascii-art-web
+
 
 go 1.22.3
