@@ -10,43 +10,37 @@
 </head>
 
 <body>
-
     <header>
-        <h1 class="title">ASCII-ART-WEB</h1>
+        <h1 class="title">ASCII Art Generator</h1>
     </header>
-
-
-    <div class="Input">
-        <form class="form" action="/ascii-art" method="POST">
+    <main>
+        <form class="form"  action="/ascii-art" method="POST">
             <div class="forText">
                 <h2>Enter Text :</h2>
-                <textarea type="text" id="inputText" name="inputText" placeholder="enter your text"
-                    required></textarea><br><br>
+                <textarea  id="inputText" name="inputText"placeholder="Enter your text here..."></textarea>
             </div>
+             <h2 id="banner-title">Choose a banner :</h2>
             <div class="forChoice">
-                <h2>Choise a Banner :</h2>
-                <div>
-                    <input type="radio" id="standard" name="choice" value="standard" checked>
-                    <label for="standard">standard</label>
-                </div>
-                <div>
-                    <input type="radio" id="shadow" name="choice" value="shadow">
-                    <label for="shadow">shadow</label>
-                </div>
-                <div>
-                    <input type="radio" id="thinkertoy" name="choice" value="thinkertoy">
-                    <label for="thinkertoy">thinkertoy</label><br><br>
-                </div>
-                <input type="submit" value="Submit" class="submit">
+               
+                <label class="lbl">
+                    <input type="radio" name="choice" value="standard" checked>
+                    standard
+                </label>
+                <label class="lbl">
+                    <input type="radio" name="choice" value="shadow">
+                    shadow
+                </label>
+                <label class="lbl">
+                    <input type="radio" name="choice" value="thinkertoy">
+                    thinkertoy
+                </label>
+            </div>
+            <button class="submit">Generate ASCII Art</button>
+            <div class="result">
+                <textarea id="result-text" readonly>{{ .Message}}</textarea>
             </div>
         </form>
-    </div>
-
-    <div class="result">
-        <h2>Generated Ascii Art:</h2>
-        <textarea class="output">{{ .Message }}</textarea>
-
-    </div>
+    </main>
 
 
 
