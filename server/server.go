@@ -48,12 +48,12 @@ func ParseForm(r *http.Request) (string, string, error) {
 	return inputText, banner, nil
 }
 
-func ReadBannerTemplate(banner string) ([]string, error) {
+func ReadBannerTemplate(banner string) ([]string, error, bool) {
 	switch banner {
 	case "standard", "shadow", "thinkertoy":
-		return functions.ReadFile("banners/" + banner + ".txt"), nil
+		return functions.ReadFile("banners/" + banner + ".txt")
 	default:
-		return nil, fmt.Errorf("error: 400 invalid banner choice: %s", banner)
+		return nil, fmt.Errorf("error: 400 invalid banner choice: %s", banner), false
 	}
 }
 
@@ -71,10 +71,15 @@ func SubmitHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	templ, err := ReadBannerTemplate(banner)
+	templ, err, status := ReadBannerTemplate(banner)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
+		if status {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		} else {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
 	}
 	treatedText := TreatData(templ, inputText)
 
@@ -85,6 +90,11 @@ func SubmitHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
-func CssHandler(w http.ResponseWriter, r *http.Request){
+
+func CssHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Error 405: Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
 	http.ServeFile(w, r, "template/style.css")
 }
