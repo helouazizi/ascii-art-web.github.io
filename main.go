@@ -9,7 +9,7 @@ import (
 
 func main() {
 	http.HandleFunc("/", server.Home)
-	http.HandleFunc("/style.css" ,  server.CssHandler)
+	http.HandleFunc("/style.css", server.CssHandler)
 	http.HandleFunc("/ascii-art", server.SubmitHandler)
 
 
