@@ -1,7 +1,6 @@
 package functions
 
 import (
-	"fmt"
 	"os"
 	"strings"
 )
@@ -28,15 +27,13 @@ func TraitmentData(text []string, inputText string) string {
 
 	for _, char := range inputText {
 		if (char < 32 && char != 13) || char > 126 {
-
-			fmt.Println(char)
-			return " Error : one of this charachter not in range "
+			return "our ascii do not suport speciale caracters"
 		}
 	}
-	inputText = strings.ReplaceAll(inputText, "\r", "\r\n")
+
 	result := ""
 
-	words := strings.Split(inputText, "\r\n")
+	words := strings.Split(inputText, "\r")
 
 	result = Final_result(text, words)
 
@@ -45,17 +42,21 @@ func TraitmentData(text []string, inputText string) string {
 
 func Final_result(arrData, words []string) string {
 	result := ""
-	for k := 0; k < len(words); k++ {
-		for i := 0; i < 8; i++ {
-			for j := 0; j < len(words[k]); j++ {
-				Ascii := (int(words[k][j] - 32))
+	for k, word := range words {
+		if word == "" && len(words) > 2 {
+			result += "\r\n"
+		} else {
+			for i := 0; i < 8; i++ {
+				for j := 0; j < len(words[k]); j++ {
+					Ascii := (int(words[k][j] - 32))
 
-				start := Ascii*8 + Ascii + 1 + i
+					start := Ascii*8 + Ascii + 1 + i
 
-				result += arrData[start]
+					result += arrData[start]
 
+				}
+				result += "\r\n"
 			}
-			result += "\n"
 		}
 	}
 

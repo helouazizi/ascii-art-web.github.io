@@ -2,7 +2,7 @@
     margin: 0%;
 }
 body{
-    background-color: rgba(235, 221, 221, 0.445);
+    background-color: rgba(126, 109, 109, 0.445);
     
 }
 main {
@@ -19,6 +19,26 @@ main {
     background-color: #070707;
     color: #fff;
 }
+label{
+    font-size: 20px;
+    font-weight: bold;
+    margin: 20px ;
+    background-color:rgba(126, 109, 109, 0.445);
+    
+    border-radius: 20px;
+    cursor: pointer;
+    
+}
+
+input[type="radio"] {
+    display: none;
+   
+  }
+
+input[type="radio"]:checked ~ label{
+    background-color:rgba(126, 109, 109, 0.2);
+}
+
 
 .form {
     width: 80%;
@@ -31,7 +51,7 @@ main {
 
 .forText {
     margin-bottom: 20px;
-    margin-top: 20px;
+    margin-top: 10px;
     padding: 20px;
     background-color: #f7f7f7;
     border: 1px solid #ddd;
@@ -40,6 +60,7 @@ main {
 
 #inputText{
     padding: 10px;
+   
     width: 98%;
     background-color: #dddddd5d;
     min-height: 100px;
@@ -47,7 +68,8 @@ main {
 
 #banner-title {
     margin-left: 20px;
-    color: #528ad4;
+    margin-bottom: 20px;
+    color: #242424;
 }
 
 .forChoice {
@@ -79,16 +101,56 @@ main {
     background-color: #f7f7f7;
     border: 1px solid #ddd;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    
 }
 
 #result-text {
      width: 98%;
      min-height: 200px;
+
     padding: 10px;
     font-family: monospace;
     font-size: 14px;
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 5px;
-    overflow: auto;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+
+
+
+
+@media (max-width : 600px) {
+    .title{
+        font-size: medium;
+    }  
+    .text{
+        font-size: small;
+    }
+
+    .submit{
+        font-size: small;
+    }
+
+    .forChoice {
+
+        display: block;
+    }
+    .choice{
+       width: 50%;
+     margin: 15px 0px;
+   
+     label{
+        width: 300px;
+        font-size: small;
+        
+    }
+    }
+
+    #inputText , #result-text{
+        width: 95%;
+    }
+    
 }
