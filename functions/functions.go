@@ -1,6 +1,7 @@
 package functions
 
 import (
+	"fmt"
 	"os"
 	"strings"
 )
@@ -21,13 +22,13 @@ func ReadFile(filename string) ([]string, error, bool) {
 }
 
 // this is the the traitment functions
-func TraitmentData(text []string, inputText string) string {
+func TraitmentData(text []string, inputText string) (string , error) {
 	// Normalize newlines
 	inputText = strings.ReplaceAll(inputText, "\r\n", "\r")
 
 	for _, char := range inputText {
 		if (char < 32 && char != 13) || char > 126 {
-			return "our ascii do not suport speciale caracters"
+			return "",fmt.Errorf("our ascii do not suport speciale caracters")
 		}
 	}
 
@@ -37,13 +38,13 @@ func TraitmentData(text []string, inputText string) string {
 
 	result = Final_result(text, words)
 
-	return result
+	return result,nil
 }
 
 func Final_result(arrData, words []string) string {
 	result := ""
 	for k, word := range words {
-		if word == "" && len(words) > 2 {
+		if word == ""  {
 			result += "\r\n"
 		} else {
 			for i := 0; i < 8; i++ {
@@ -59,6 +60,5 @@ func Final_result(arrData, words []string) string {
 			}
 		}
 	}
-
 	return result
 }

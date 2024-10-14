@@ -1,15 +1,18 @@
 body{
-    background-color: rgba(126, 109, 109, 0.445);
+    background-color: rgba(132, 130, 151, 0.884);
 
    
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
+}section{
+    display: block;
+    text-align: center;
 }
 .Ops{
+
     font-size: 90px;
-    
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     color: rgb(19, 18, 18);
  
@@ -19,7 +22,7 @@ body{
     
     font-size: 50px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    text-align: center;
+  
 }
 button{
     background-color: rgb(3, 3, 3);
@@ -36,7 +39,7 @@ button a{
 }
 button:hover{
     transition: background-color 0.8s linear;
-    background-color: rgb(116, 116, 116);
+    background-color:rgba(126, 109, 109, 0.445);
     a{
         color: rgb(17, 16, 16);
     }

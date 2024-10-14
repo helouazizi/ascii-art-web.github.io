@@ -99,12 +99,17 @@ func SubmitHandler(w http.ResponseWriter, r *http.Request) {
 			ErrorTemplate.Execute(w, "Internal Server Error")
 			return
 		} else {
-			w.WriteHeader(http.StatusBadRequest)
-			ErrorTemplate.Execute(w, "Bad Request")
+			w.WriteHeader(http.StatusNotFound)
+			ErrorTemplate.Execute(w, " BANNER NOT FOUND")
 			return
 		}
 	}
-	treatedText := functions.TraitmentData(templ, inputText)
+	treatedText, err := functions.TraitmentData(templ, inputText)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		ErrorTemplate.Execute(w, "Our ascii program  do not suport non-ascii printable characters")
+		return
+	}
 	err = temple01.Execute(w, PageData{Ascii: treatedText})
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
