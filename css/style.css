@@ -23,8 +23,36 @@ main {
     color: #fff;
 }
 
+label {
+    font-size: 20px;
+    font-weight: 200;
+    border-radius: 20px;
+    cursor: pointer;
+    text-align: center;
+    padding: 5px 30px;
+}
 
+.choice {
+    margin: 20px;
+    background-color:  #1a024fd7;
+    color: #ddd;
+    width: auto;
+    border-radius: 20px;
+    cursor: pointer;
+    text-align: center;
+    padding: 10px 5px;
+}
 
+input[type="radio"] {
+    display: none;
+
+}
+
+input[type="radio"]:checked~label {
+    background-color: rgb(139, 124, 221);
+    color: #242424;
+
+}
 
 
 .form {
@@ -65,37 +93,6 @@ main {
     justify-items: center;
     margin-bottom: 20px;
 }
-
-.choice {
-    margin: 20px;
-    background-color: rgba(132, 130, 151, 0.884);
-    width: auto;
-    border-radius: 20px;
-    cursor: pointer;
-    text-align: center;
-    padding: 5px 0px;
-}
-
-label {
-    font-size: 20px;
-    font-weight: 200;
-    border-radius: 20px;
-    cursor: pointer;
-    text-align: center;
-    padding: 5px 30px;
-    width: 100%;
-}
-
-input[type="radio"] {
-    display: none;
-
-}
-
-input[type="radio"]:checked~label {
-    background-color: rgb(168, 156, 233);
-
-}
-
 
 .submit {
     width: 100%;
@@ -166,33 +163,33 @@ input[type="radio"]:checked~label {
         font-size: small;
     }
 
-    .forChoice{
+    .forChoice {
+
         display: block;
-        width: fit-content;
-        label {
-            font-size: medium;
-        }
     }
 
-    input[type="radio"]:checked~label {
-        background-color: rgb(168, 156, 233);
-        padding: 1%;
-       
+    .choice {
+        background-color: #1a024fd7;
+        color: #ddd;
+
+        display: flex;
+        flex-direction: column;
+        padding: 5px 5px;
+
+        label {
+
+            font-size: small;
+            
+           margin: 0px;
+
+        }
+
+        
     }
-   
+
     #inputText,
     #result-text {
         width: 95%;
     }
-    
-    }
-    
-    
-   
-    
-   
 
-    
-
-   
-
+}
