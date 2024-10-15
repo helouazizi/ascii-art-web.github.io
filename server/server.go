@@ -104,6 +104,11 @@ func SubmitHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+	if len(templ) != 856 {
+		w.WriteHeader(http.StatusInternalServerError)
+		ErrorTemplate.Execute(w, "Internal Server Error")
+		return
+	}
 	treatedText, err := functions.TraitmentData(templ, inputText)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)

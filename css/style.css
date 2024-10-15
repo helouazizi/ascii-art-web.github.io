@@ -166,37 +166,33 @@ input[type="radio"]:checked~label {
         font-size: small;
     }
 
-    .forChoice {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-    }
-
-   
-    
-    .choice {
-        margin: 20px;
-        background-color: rgba(132, 130, 151, 0.884);
-        width: auto;
-        border-radius: 20px;
-        cursor: pointer;
-        text-align: center;
-
+    .forChoice{
+        display: block;
+        width: fit-content;
         label {
             font-size: medium;
-            font-weight: 200;
-            border-radius: 20px;
-            cursor: pointer;
-            text-align: center;
-            padding: 5px 30px;
         }
     }
 
-    
-
+    input[type="radio"]:checked~label {
+        background-color: rgb(168, 156, 233);
+        padding: 1%;
+       
+    }
+   
     #inputText,
     #result-text {
         width: 95%;
     }
+    
+    }
+    
+    
+   
+    
+   
 
-}
+    
+
+   
+
