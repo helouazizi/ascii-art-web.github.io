@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"html/template"
 	"log"
 	"net/http"
 
@@ -10,25 +9,14 @@ import (
 )
 
 func main() {
-	Temple01, err := template.ParseFiles("template/index.html")
-	if err != nil {
-		log.Fatal(err)
-	}
-	ErrorTemplate, err := template.ParseFiles("template/error.html")
-	if err != nil {
-		log.Fatal(err)
-	}
+	http.HandleFunc("/", server.Home)
 
-	Pointer := &server.ParsedFiles{
-		Temple01:      Temple01,
-		ErrorTemplate: ErrorTemplate,
-	}
+	http.HandleFunc("/ascii-art", server.SubmitHandler)
 
-	http.HandleFunc("/", Pointer.Home)
-	http.HandleFunc("/css/style.css", Pointer.CssHandler)
-	http.HandleFunc("/ascii-art", Pointer.SubmitHandler)
-	http.HandleFunc("/css/error.css", Pointer.CssErrHundle)
+	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
 
 	fmt.Println("Server is running on port 8080", ">>> http://localhost:8080")
-	http.ListenAndServe(":8080", nil)
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		log.Fatalf("Could not start server: %v\n", err)
+	}
 }
