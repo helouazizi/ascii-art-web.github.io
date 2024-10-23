@@ -13,7 +13,7 @@ func main() {
 
 	http.HandleFunc("/ascii-art", server.SubmitHandler)
 
-	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
+	http.HandleFunc("/css/", server.ServStatic)
 
 	fmt.Println("Server is running on port 8080", ">>> http://localhost:8080")
 	if err := http.ListenAndServe(":8080", nil); err != nil {

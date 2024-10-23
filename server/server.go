@@ -59,6 +59,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 		parsedFiles.ErrorTemplate.Execute(w, "NOT FOUND")
 		return
 	}
+
 	err := parsedFiles.Temple01.Execute(w, nil)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -144,4 +145,16 @@ func SubmitHandler(w http.ResponseWriter, r *http.Request) {
 		parsedFiles.ErrorTemplate.Execute(w, "Internal Server Error")
 		return
 	}
+}
+
+func ServStatic(w http.ResponseWriter, r *http.Request) {
+	// Check if the request is for the CSS directory itself
+	if r.URL.Path == "/css/" || r.URL.Path == "/css" {
+		w.WriteHeader(http.StatusNotFound)
+		parsedFiles.ErrorTemplate.Execute(w, "NOT FOUND")
+		return
+	}
+
+	// Serve the CSS file if it's a valid request
+	http.StripPrefix("/css/", http.FileServer(http.Dir("css"))).ServeHTTP(w, r)
 }
